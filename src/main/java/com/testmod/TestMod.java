@@ -2,8 +2,11 @@ package com.testmod;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.ItemStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +27,18 @@ public class TestMod implements ModInitializer {
 		// Proceed with mild caution.
 		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
 				.register((itemGroup) -> itemGroup.accept(ModItems.STRIPMINE));
+		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
+				.register((itemGroup) -> itemGroup.accept(ModItems.COPIER));
+
+		AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
+			ItemStack heldItem = player.getItemInHand(hand);
+
+			if (heldItem.getItem() instanceof Copier tool) {
+				return tool.onLeftClick(player, world, pos);
+			}
+
+			return InteractionResult.PASS;
+		});
 		LOGGER.info("Hello Fabric world!");
 	}
 }

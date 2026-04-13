@@ -26,7 +26,11 @@ public class ModItems {
             Stripmine::new,
             new Item.Properties()
     );
-
+    public static final  Copier COPIER  = register(
+            "copier",
+            Copier::new,
+            new Item.Properties()
+    );
     public static void initialize() {
     }
 }
