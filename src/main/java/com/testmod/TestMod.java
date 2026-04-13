@@ -30,6 +30,7 @@ public class TestMod implements ModInitializer {
 		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
 				.register((itemGroup) -> itemGroup.accept(ModItems.COPIER));
 
+		//register Event for Left-Click on Copier Tool
 		AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
 			ItemStack heldItem = player.getItemInHand(hand);
 

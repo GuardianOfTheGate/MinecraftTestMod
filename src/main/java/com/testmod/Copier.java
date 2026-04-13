@@ -24,17 +24,17 @@ import java.util.function.Consumer;
 public class Copier extends Item {
     public static final Logger LOGGER = LoggerFactory.getLogger("template-mod-3");
 
-    // Bedrock as "empty/unset" sentinel value
+    // create Array with Bedrock as Sentinel
     private final BlockState[][][] recordedBlocks = new BlockState[5][5][5];
 
     public Copier(Item.Properties properties) {
         super(properties);
-        // Fill with bedrock as default
+
         for (BlockState[][] plane : recordedBlocks)
             for (BlockState[] row : plane)
                 Arrays.fill(row, Blocks.BEDROCK.defaultBlockState());
     }
-
+    //create ToolTip
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay displayComponent, Consumer<Component> textConsumer, TooltipFlag type) {
         textConsumer.accept(Component.translatable("Right-Click to copy all Blocks in the Grid").withStyle(ChatFormatting.GRAY));
@@ -42,7 +42,7 @@ public class Copier extends Item {
     }
 
 
-
+    //calculates target Block based on origin, direction, and offset
     public BlockPos getTargetPos(BlockPos origin, Direction facing, int u, int v, int depth) {
         return switch (facing.getAxis()) {
             case Z -> origin.offset(u, v, facing.getStepZ() * (depth + 1));
@@ -51,6 +51,7 @@ public class Copier extends Item {
         };
     }
 
+    //record Blocks in 5x5 cube on right click
     @Override
     public @NonNull InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
@@ -71,9 +72,11 @@ public class Copier extends Item {
         }
 
         LOGGER.info("Recorded Blocks");
+        player.displayClientMessage(Component.literal("Blocks copied!").withStyle(ChatFormatting.GREEN), true);
         return InteractionResult.SUCCESS;
     }
 
+    //places recorded Blocks
     public InteractionResult onLeftClick(Player player, Level level, BlockPos pos) {
         if (level.isClientSide() || player == null) return InteractionResult.PASS;
 
