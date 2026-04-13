@@ -21,6 +21,8 @@ public class ModItems {
         return item;
     }
 
+
+
     public static final  Stripmine STRIPMINE  = register(
             "stripmine",
             Stripmine::new,

@@ -1,10 +1,15 @@
 package com.testmod;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -13,6 +18,7 @@ import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 
 public class Copier extends Item {
@@ -28,6 +34,14 @@ public class Copier extends Item {
             for (BlockState[] row : plane)
                 Arrays.fill(row, Blocks.BEDROCK.defaultBlockState());
     }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay displayComponent, Consumer<Component> textConsumer, TooltipFlag type) {
+        textConsumer.accept(Component.translatable("Right-Click to copy all Blocks in the Grid").withStyle(ChatFormatting.GRAY));
+        textConsumer.accept(Component.translatable("Left-Click to place copied Blocks inside the Grid").withStyle(ChatFormatting.GRAY));
+    }
+
+
 
     public BlockPos getTargetPos(BlockPos origin, Direction facing, int u, int v, int depth) {
         return switch (facing.getAxis()) {

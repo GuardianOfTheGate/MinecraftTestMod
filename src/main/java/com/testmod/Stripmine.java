@@ -1,14 +1,21 @@
 package com.testmod;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.function.Consumer;
 
 
 //Mines a 3x3 cube on BlockHit. Hit block is centre of cubes front face
@@ -16,6 +23,11 @@ public class Stripmine extends Item{
 
     public Stripmine(Item.Properties properties){
         super(properties);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay displayComponent, Consumer<Component> textConsumer, TooltipFlag type) {
+        textConsumer.accept(Component.translatable("Right-Click to mine all blocks in a 3x3 cube").withStyle(ChatFormatting.GRAY));
     }
 
     @Override
